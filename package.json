@@ -5,7 +5,7 @@
   "main": "ChaiTea.js",
   "repository": {
     "type": "git",
-    "url": "git@git.socialdecode.com:SocialDecode/cass2csv.git"
+    "url": "git@github.com:ZeroDragon/chaitea-framework.git"
   },
   "author": "Carlos Flores",
   "license": "MIT",
