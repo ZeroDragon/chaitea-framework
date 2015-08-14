@@ -21,21 +21,36 @@ _assets = (req,res,next)->
 	fileArr = req.originalUrl.split('.')
 	file = fileArr.shift()
 	ext = fileArr.pop()
+
+	if ext.indexOf('?') isnt -1
+		ext = ext.substring(0, ext.indexOf('?'))
+	if ext.indexOf('#') isnt -1
+		ext = ext.substring(0, ext.indexOf('#'))
+
 	_notFound = ->
 		res.status 404
 		res.render config.static+'/404.jade'
 		return
 	switch
 		when _type('.css')
+			#is it a stylus file
 			try
 				styl = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.styl",{encoding:'utf8'})
+				stylus.render styl,(err,css)->
+					res.header "Content-type", "text/css"
+					res.send css
+					return
 			catch e
-				_notFound()
-				return
-			stylus.render styl,(err,css)->
-				res.header "Content-type", "text/css"
-				res.send css
-				return
+				#is it a vanilla css
+				try
+					styl = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.css",{encoding:'utf8'})
+					stylus.render styl,(err,css)->
+						res.header "Content-type", "text/css"
+						res.send css
+						return
+				catch e
+					_notFound()
+					return
 		when _type('.js')
 			try
 				script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
