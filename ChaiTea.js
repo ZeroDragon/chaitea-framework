@@ -1,2 +1,2 @@
 require('coffee-script/register');
-module.exports = require('./chaiTea.coffee');
+module.exports = require('./ChaiTea.coffee');
