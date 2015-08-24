@@ -22,49 +22,52 @@ _assets = (req,res,next)->
 	file = fileArr.shift()
 	ext = fileArr.pop()
 
-	if ext.indexOf('?') isnt -1
-		ext = ext.substring(0, ext.indexOf('?'))
-	if ext.indexOf('#') isnt -1
-		ext = ext.substring(0, ext.indexOf('#'))
+	if ext
 
-	_notFound = ->
-		res.status 404
-		res.render config.static+'/404.jade'
-		return
-	switch
-		when _type('.css')
-			#is it a stylus file
-			try
-				styl = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.styl",{encoding:'utf8'})
-				stylus.render styl,(err,css)->
-					res.header "Content-type", "text/css"
-					res.send css
-					return
-			catch e
-				#is it a vanilla css
+		if ext.indexOf('?') isnt -1
+			ext = ext.substring(0, ext.indexOf('?'))
+		if ext.indexOf('#') isnt -1
+			ext = ext.substring(0, ext.indexOf('#'))
+
+		_notFound = ->
+			res.status 404
+			res.render config.static+'/404.jade'
+			return
+		switch
+			when _type('.css')
+				#is it a stylus file
 				try
-					styl = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.css",{encoding:'utf8'})
+					styl = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.styl",{encoding:'utf8'})
 					stylus.render styl,(err,css)->
 						res.header "Content-type", "text/css"
 						res.send css
 						return
 				catch e
+					#is it a vanilla css
+					try
+						styl = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.css",{encoding:'utf8'})
+						stylus.render styl,(err,css)->
+							res.header "Content-type", "text/css"
+							res.send css
+							return
+					catch e
+						_notFound()
+						return
+			when _type('.js')
+				try
+					script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
+				catch e
 					_notFound()
 					return
-		when _type('.js')
-			try
-				script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
-			catch e
-				_notFound()
+				compiled = coffee.compile script, {bare:true}
+				res.header "Content-type", "application/javascript"
+				res.send compiled
 				return
-			compiled = coffee.compile script, {bare:true}
-			res.header "Content-type", "application/javascript"
-			res.send compiled
-			return
-		else
-			res.sendFile "#{process.cwd()}/app/assets/#{file}.#{ext}", (err)-> _notFound() if err
-			return
-	next()
+			else
+				res.sendFile "#{process.cwd()}/app/assets/#{file}.#{ext}", (err)-> _notFound() if err
+				return
+		next()
+	else next()
 
 _startserver = ->
 	app.use _assets
