@@ -1,5 +1,5 @@
 _getConfig = ->
-	cfg = require "#{process.cwd()}/config.json"
+	cfg = require.main.require "./config.json"
 	cfg.static = "#{process.cwd()}/app/views"
 	return cfg
 config = _getConfig()
@@ -90,29 +90,6 @@ specs = {
 	app         : _createApp()
 	jade        : jade
 	startServer : _startserver
-	login       : (req,res,next)->
-		header = req.headers['authorization']
-		reject = ->
-			res.statusCode = 401
-			res.setHeader('WWW-Authenticate', 'Basic realm="Secure Area"')
-			res.render config.static+'/401.jade'
-			return
-
-		return reject() unless header
-		token = header.split(/\s+/).pop()
-
-		unless req.session.userData
-
-			tokenData = new Buffer(token,'base64').toString().split(':')
-			payload = {
-				username : tokenData[0]
-				password : tokenData[1]
-			}
-			#Login disabled (all credentials are granted)
-			req.session.userData = payload
-			# return reject() #to reject login
-		else
-			next()
 
 	CT_dateFormat : (epoch,format=false)->
 		return df epoch*1000,format
@@ -123,14 +100,21 @@ specs = {
 	CT_LoadModel : (name)->
 		return require "#{process.cwd()}/app/models/#{name}_model.coffee"
 
-	CT_stringToDate : (string)->
+	CT_StringToDate : (string)->
 		r = string.split('-').map (v,i)->
 			v = ~~v
 			v-- if i is 1
 			return v
 		return new Date r[0],r[1],r[2],0,0,0
+
+	CT_Infusion : (recipe)->
+		for name, ingredient of recipe
+			globalScope[name] = ingredient
+
 }
 
+globalScope = false
 module.exports = (scp)->
+	globalScope = scp
 	scp[name] = spec for name, spec of specs
 	return
