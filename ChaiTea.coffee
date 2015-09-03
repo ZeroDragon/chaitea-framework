@@ -19,8 +19,8 @@ d = new Date();d.setTimezone(config.timezone)
 _assets = (req,res,next)->
 	_type = (q)-> req.originalUrl.indexOf(q) isnt -1
 	fileArr = req.originalUrl.split('.')
-	file = fileArr.shift()
 	ext = fileArr.pop()
+	file = fileArr.join('.')
 
 	if ext
 
@@ -35,7 +35,7 @@ _assets = (req,res,next)->
 			return
 		switch
 			when _type('.css')
-				#is it a stylus file
+				# is it a stylus file
 				try
 					styl = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.styl",{encoding:'utf8'})
 					stylus.render styl,(err,css)->
@@ -43,22 +43,29 @@ _assets = (req,res,next)->
 						res.send css
 						return
 				catch e
-					#is it a vanilla css
+					# is it a vanilla css
 					try
-						styl = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.css",{encoding:'utf8'})
-						stylus.render styl,(err,css)->
-							res.header "Content-type", "text/css"
-							res.send css
-							return
+						css = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.css",{encoding:'utf8'})
+						res.header "Content-type", "text/css"
+						res.send css
+						return
 					catch e
 						_notFound()
 						return
 			when _type('.js')
+				# is it a coffee file
 				try
 					script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
 				catch e
-					_notFound()
-					return
+					# if it a vanilla js
+					try
+						js = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
+						res.header "Content-type", "application/javascript"
+						res.send js
+						return
+					catch e
+						_notFound()
+						return
 				compiled = coffee.compile script, {bare:true}
 				res.header "Content-type", "application/javascript"
 				res.send compiled
