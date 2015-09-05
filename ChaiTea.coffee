@@ -20,7 +20,8 @@ d = new Date();d.setTimezone(config.timezone)
 
 _assets = (req,res,next)->
 	_type = (q)-> req.originalUrl.indexOf(q) isnt -1
-	fileArr = req.originalUrl.split('.')
+	fileArrNoParams = req.originalUrl.split('?')[0]
+	fileArr = fileArrNoParams.split('.')
 	ext = fileArr.pop()
 	file = fileArr.join('.')
 
