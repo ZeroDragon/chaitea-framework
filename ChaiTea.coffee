@@ -4,16 +4,17 @@ _getConfig = ->
 	return cfg
 config = _getConfig()
 
-express = require 'express'
-request = require 'request'
-session = require 'express-session'
-df      = require 'dateformat'
-bParser = require 'body-parser'
-jade    = require 'jade'
-stylus  = require 'stylus'
-fs      = require 'fs'
-coffee  = require 'coffee-script'
-time    = require('time')(Date)
+consolecolors = require 'consolecolors'
+express       = require 'express'
+request       = require 'request'
+session       = require 'express-session'
+df            = require 'dateformat'
+bParser       = require 'body-parser'
+jade          = require 'jade'
+stylus        = require 'stylus'
+fs            = require 'fs'
+coffee        = require 'coffee-script'
+time          = require('time')(Date)
 d = new Date();d.setTimezone(config.timezone)
 
 _assets = (req,res,next)->
@@ -57,7 +58,7 @@ _assets = (req,res,next)->
 				try
 					script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
 				catch e
-					# if it a vanilla js
+					# is it a vanilla js
 					try
 						js = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
 						res.header "Content-type", "application/javascript"
@@ -116,12 +117,8 @@ specs = {
 
 	CT_Infusion : (recipe)->
 		for name, ingredient of recipe
-			globalScope[name] = ingredient
+			global[name] = ingredient
 
 }
 
-globalScope = false
-module.exports = (scp)->
-	globalScope = scp
-	scp[name] = spec for name, spec of specs
-	return
+global[name] = spec for name, spec of specs
