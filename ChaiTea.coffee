@@ -15,6 +15,7 @@ stylus        = require 'stylus'
 fs            = require 'fs'
 coffee        = require 'coffee-script'
 time          = require('time')(Date)
+deasync       = require 'deasync'
 d = new Date();d.setTimezone(config.timezone)
 
 _assets = (req,res,next)->
@@ -98,8 +99,9 @@ specs = {
 	app         : _createApp()
 	jade        : jade
 	startServer : _startserver
+	CT_Await    : deasync.loopWhile
 
-	CT_dateFormat : (epoch,format=false)->
+	CT_DateFormat : (epoch,format=false)->
 		return df epoch*1000,format
 
 	CT_LoadController : (name)->
