@@ -120,6 +120,13 @@ specs = {
 	CT_Infusion : (recipe)->
 		for name, ingredient of recipe
 			global[name] = ingredient
+	CT_Routes : (file,cb)->
+		if typeof file is 'function'
+			require.main.require "./routes.coffee"
+			file()
+		else
+			require.main.require "./#{file}.coffee"
+			cb()
 
 }
 
