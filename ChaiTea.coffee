@@ -81,7 +81,7 @@ _assets = (req,res,next)->
 _startserver = ->
 	app.use _assets
 	server = app.listen config.port, ->
-		console.log 'Listening at http://localhost:'+config.port
+		console.log 'Listening at '+"http://localhost:#{config.port}".magenta
 
 _createApp = ->
 	app = express()
@@ -95,11 +95,11 @@ _createApp = ->
 	return app
 
 specs = {
-	config      : _getConfig()
-	app         : _createApp()
-	jade        : jade
-	startServer : _startserver
-	CT_Await    : deasync.loopWhile
+	config         : _getConfig()
+	app            : _createApp()
+	jade           : jade
+	CT_StartServer : _startserver
+	CT_Await       : deasync.loopWhile
 
 	CT_DateFormat : (epoch,format=false)->
 		return df epoch*1000,format
