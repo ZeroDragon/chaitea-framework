@@ -99,6 +99,7 @@ specs = {
 	config         : _getConfig()
 	app            : _createApp()
 	jade           : jade
+	CT_Assets      : _assets
 	CT_StartServer : _startserver
 	CT_Await       : deasync.loopWhile
 
