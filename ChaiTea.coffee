@@ -80,9 +80,18 @@ _assets = (req,res,next)->
 	else next()
 
 _startserver = ->
+	ready = ->
+		console.log "Listening at "+"#{if config.https? then "https" else "http"}://localhost:#{config.port}".magenta
+
 	app.use _assets
-	server = app.listen config.port, ->
-		console.log 'Listening at '+"http://localhost:#{config.port}".magenta
+
+	if config.https?
+		https = require "https"
+		key = if config.https.key.indexOf("\\n") is -1 then config.https.key else fs.readFileSync(config.https.key)
+		cert = if config.https.cert.indexOf("\\n") is -1 then config.https.cert else fs.readFileSync(config.https.cert)
+		https.createServer({key:key,cert:cert}, app).listen config.port, ready
+	else
+		server = app.listen config.port, ready
 
 _createApp = ->
 	app = express()
