@@ -91,7 +91,7 @@ _startserver = ->
 		cert = if config.https.cert.indexOf("\\n") is -1 then config.https.cert else fs.readFileSync(config.https.cert)
 		https.createServer({key:key,cert:cert}, app).listen config.port, ready
 	else
-		server = app.listen config.port, ready
+		app.listen config.port, ready
 
 _createApp = ->
 	app = express()
