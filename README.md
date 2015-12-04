@@ -83,18 +83,18 @@ So you don't need to worry about serving sessions and parsing POST or GET reques
 ChaiTea-Framework exposes variables and methods to use globally on your application, this is to make it easier to load your methods.  
 The methods and variables exposed are:  
 
-- config
-- app
-- jade
-- CT_Assets
-- CT_StartServer
-- CT_Await
-- CT_DateFormat
-- CT_LoadController
-- CT_LoadModel
-- CT_StringToDate
-- CT_Infusion
-- CT_Routes
+- [config](#config)
+- [app](#app)
+- [jade](#jade)
+- [CT_Assets](#ct_assetsreqresnext-middleware)
+- [CT_StartServer](#ct_startserver)
+- [CT_Await](#ct_awaitfunction-deprecated-soon)
+- [CT_DateFormat](#ct_dateformatinteger-epochformat)
+- [CT_LoadController](#ct_loadcontrollerstring-controller)
+- [CT_LoadModel](#ct_loadmodelstring-model)
+- [CT_StringToDate](#ct_stringtodatestring-html5date)
+- [CT_Infusion](#ct_infusionobject-recipe)
+- [CT_Routes](#ct_routesstring-file-function-callback)
 
 ### config
 Config is your ```config.json``` file parsed and extended it will contain all your predefined definitions aswell as static:
