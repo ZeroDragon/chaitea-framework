@@ -86,7 +86,7 @@ The methods and variables exposed are:
 - [config](#config)
 - [app](#app)
 - [jade](#jade)
-- CT_Static
+- [CT_Static](#ct_static)
 - [CT_Assets](#ct_assetsreqresnext-middleware)
 - [CT_StartServer](#ct_startserver)
 - [CT_Await](#ct_awaitfunction-deprecated-soon)
