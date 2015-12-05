@@ -86,6 +86,7 @@ The methods and variables exposed are:
 - [config](#config)
 - [app](#app)
 - [jade](#jade)
+- CT_Static
 - [CT_Assets](#ct_assetsreqresnext-middleware)
 - [CT_StartServer](#ct_startserver)
 - [CT_Await](#ct_awaitfunction-deprecated-soon)
@@ -97,15 +98,16 @@ The methods and variables exposed are:
 - [CT_Routes](#ct_routesstring-file-function-callback)
 
 ### config
-Config is your ```config.json``` file parsed and extended it will contain all your predefined definitions aswell as static:
-
-- ```static``` this is a refference to the app/views route inside your project, so  you can use it to render just like you do it on express.js.  
+Config is your ```config.json``` file parsed and ready to use.
 
 ### app
 This is the regular app variable obtained from express: ```app = express()```.  
 
 ### jade
 Jade rendering engine, you can use this to render jade files to variables, not required to render a page, since express already knows that if the view file is a ```.jade``` file, it will use jade internally.  
+
+### CT_Static
+This is a refference to the app/views route inside your project, so you can use it to render just like you do it on express.js.  
 
 ### CT_Assets(req,res,next) [middleware]
 CT_Assets takes care of the pre-rendering of Styl=>CSS, Coffee=>JS and anything else as binary file, aswell will return an 404 error if the requested asset is not found.  
@@ -159,6 +161,16 @@ In this example, after calling CT_Infusion, you can have access to ```request```
 ### CT_Routes([string file,] function callback)  
 If you are like me, you dont want to see all the routes inside the main.coffee app file. with this method, you can send all your routes to another file and call them before starting the server. If no file reference is provided, it will load ```./routes.coffee``` file.
 When the routes are loaded, a callback is fired and you can continue with normal execution.  
+
+## Release Notes
+
+- 1.0.16 -> Introducing CT_Static and deprecating config.static  
+- 1.0.15 -> Deprecating CT_Await
+- 1.0.14 -> Added Readme and warning to future deprecated CT_Await  
+- 1.0.13 -> Adding HTTPS Support  
+- 1.0.12 -> CT_Assets are now a thing!  
+- 1.0.10 -> CT_Routes to define the routes in a sepparated file  
+- anythingBefore -> nightly build  
 
 ## 10Q
 If you are this far, thanks for reading! 

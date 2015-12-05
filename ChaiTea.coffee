@@ -1,9 +1,11 @@
-_getConfig = ->
-	cfg = require.main.require "./config.json"
-	cfg.static = "#{process.cwd()}/app/views"
-	return cfg
-config = _getConfig()
+###*
+ * Chai Tea Framework
+ * By ZeroDragon (Carlos Flores)
+ * https://github.com/ZeroDragon/
+ * http://floresbenavides.com
+###
 
+config        = require.main.require "./config.json"
 consolecolors = require 'consolecolors'
 express       = require 'express'
 request       = require 'request'
@@ -15,7 +17,6 @@ stylus        = require 'stylus'
 fs            = require 'fs'
 coffee        = require 'coffee-script'
 time          = require('time')(Date)
-deasync       = require 'deasync'
 d = new Date();d.setTimezone(config.timezone)
 
 _assets = (req,res,next)->
@@ -34,7 +35,7 @@ _assets = (req,res,next)->
 
 		_notFound = ->
 			res.status 404
-			res.render config.static+'/404.jade'
+			res.render CT_Static+'/404.jade'
 			return
 		switch
 			when _type('.css')
@@ -105,12 +106,12 @@ _createApp = ->
 	return app
 
 specs = {
-	config         : _getConfig()
+	config         : config
 	app            : _createApp()
 	jade           : jade
+	CT_Static      : "#{process.cwd()}/app/views"
 	CT_Assets      : _assets
 	CT_StartServer : _startserver
-	CT_Await       : deasync.loopWhile
 
 	CT_DateFormat : (epoch,format=false)->
 		return df epoch*1000,format
