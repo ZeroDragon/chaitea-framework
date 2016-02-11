@@ -96,8 +96,9 @@ _startserver = ->
 
 _createApp = ->
 	app = express()
-	app.use bParser.urlencoded { extended: true }
-	app.use bParser.json()
+	payloadSize = if config.payloadSize? then config.payloadSize else '2mb'
+	app.use bParser.urlencoded { extended: true,limit: payloadSize }
+	app.use bParser.json({limit: payloadSize})
 	app.use session({
 		secret : config.session_secret
 		resave : true

@@ -164,6 +164,7 @@ When the routes are loaded, a callback is fired and you can continue with normal
 
 ## Release Notes
 
+- 1.0.17 -> payloadSize can be defined on config.json to allow Request entity too large  
 - 1.0.16 -> Introducing CT_Static and deprecating config.static  
 - 1.0.15 -> Deprecating CT_Await
 - 1.0.14 -> Added Readme and warning to future deprecated CT_Await  
