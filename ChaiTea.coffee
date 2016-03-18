@@ -17,6 +17,7 @@ stylus        = require 'stylus'
 fs            = require 'fs'
 coffee        = require 'coffee-script'
 time          = require('time')(Date)
+compress      = require 'compression'
 d = new Date();d.setTimezone(config.timezone)
 
 _assets = (req,res,next)->
@@ -99,6 +100,7 @@ _createApp = ->
 	payloadSize = if config.payloadSize? then config.payloadSize else '2mb'
 	app.use bParser.urlencoded { extended: true,limit: payloadSize }
 	app.use bParser.json({limit: payloadSize})
+	app.use compress()
 	app.use session({
 		secret : config.session_secret
 		resave : true
