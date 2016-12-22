@@ -1,6 +1,6 @@
 {
   "name": "chaitea-framework",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Chai Tea is a back-end framework for nodejs, working over ExpressJS using MVC structure. Auto compiles JADE, STYLUS and COFFEESCRIPT to clientside, no need to pre-compiling.",
   "main": "ChaiTea.js",
   "repository": {
@@ -17,9 +17,9 @@
     "dateformat": "1.0.11",
     "express": "4.13.1",
     "express-session": "1.11.3",
-    "jade": "1.11.0",
-    "request": "2.60.0",
-    "stylus": "0.52.0",
+    "pug": "2.0.0-beta6",
+    "request": "2.79.0",
+    "stylus": "0.54.5",
     "time": "0.11.4"
   }
 }

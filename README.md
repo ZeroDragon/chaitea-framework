@@ -1,19 +1,19 @@
 Chai Tea Framework
 ==================
 
-ChaiTea-Framework is a BackEnd framework for nodejs, working over ExpressJS using MVC structure. Auto compiles JADE, STYLUS and COFFEESCRIPT to clientside, no need to pre-compiling.
+ChaiTea-Framework is a BackEnd framework for nodejs, working over ExpressJS using MVC structure. Auto compiles PUG, STYLUS and COFFEESCRIPT to clientside, no need to pre-compiling.
 
 Basically you can continue coding with coffeescript all the way to the clientside without worring about precompiling the files (no grunt,gulp,make,cake,etc needed).   
 Do you like stylus? Well, you can use stylus and ChaiTea-Framework will parse them to CSS on the go.  
-Jade view files will render, include, extend, mixin, etc and not a single line of HTML will be on your repo.  
+Pug view files will render, include, extend, mixin, etc and not a single line of HTML will be on your repo.  
 Of course if you still want to use JS, CSS and HTML files, you can use them.
 
 A few considerations must be taken in order to make it work efficiently. I Strongly  suggest to use ChaiTea-Brewer to kickstart a new project, it will take care of creating a bare minimal app that can be modified to any of your needs.
 
 ## Why ChaiTea-Framework?
 ### Story
-ChaiTea-Framework was made because I needed to create a few apps at my job. First I tried using bare minimal html requirements, but routing and taking care of all by myself took too much time. Then using expressJS, this was a good option, but everytime I needed to set the same configuration over and over again. Then I tried HARP because I wanted to use Coffeescript, Stylus and Jade without compiling everytime before testing, but HARP is not exactly what I needed, uses SASS and need to configure extra stuff everytime.  
-And finally I decided that it was enough, so I started to create a framework over ExpressJS that let me use Coffeescript, Stylus and Jade on the fly. Then added my most recurrent process to the core, so I can use them globally. Then I created a brewer in order to create new apps in 1 line of bash.
+ChaiTea-Framework was made because I needed to create a few apps at my job. First I tried using bare minimal html requirements, but routing and taking care of all by myself took too much time. Then using expressJS, this was a good option, but everytime I needed to set the same configuration over and over again. Then I tried HARP because I wanted to use Coffeescript, Stylus and Pug without compiling everytime before testing, but HARP is not exactly what I needed, uses SASS and need to configure extra stuff everytime.  
+And finally I decided that it was enough, so I started to create a framework over ExpressJS that let me use Coffeescript, Stylus and Pug on the fly. Then added my most recurrent process to the core, so I can use them globally. Then I created a brewer in order to create new apps in 1 line of bash.
 
 ### Constant Testing and Improvement
 I've been using ChaiTea-Framework ever since on every webapp I need to create, and when new stuff is needed, I add it to the core and updated the repo. So this is not a zombie project and its constantly being tweaked. Actually my [blog](http://floresbenavides.com) was created over ChaiTea-Framework.
@@ -85,7 +85,8 @@ The methods and variables exposed are:
 
 - [config](#config)
 - [app](#app)
-- [jade](#jade)
+- [jade (alias)](#pug)
+- [pug](#pug)
 - [CT_Static](#ct_static)
 - [CT_Assets](#ct_assetsreqresnext-middleware)
 - [CT_StartServer](#ct_startserver)
@@ -103,8 +104,8 @@ Config is your ```config.json``` file parsed and ready to use.
 ### app
 This is the regular app variable obtained from express: ```app = express()```.  
 
-### jade
-Jade rendering engine, you can use this to render jade files to variables, not required to render a page, since express already knows that if the view file is a ```.jade``` file, it will use jade internally.  
+### pug (alias: jade)
+Pug rendering engine, you can use this to render pug files to variables, not required to render a page, since express already knows that if the view file is a ```.pug``` file, it will use pug internally.  
 
 ### CT_Static
 This is a refference to the app/views route inside your project, so you can use it to render just like you do it on express.js.  
@@ -164,6 +165,7 @@ When the routes are loaded, a callback is fired and you can continue with normal
 
 ## Release Notes
 
+- 2.0.0  -> Using PUG instead of JADE, all jade files must be renamed to pug. Updated dependencies for stylus and time
 - 1.0.18 -> ChaiTea uses gzip appwide  
 - 1.0.17 -> payloadSize can be defined on config.json to allow Request entity too large  
 - 1.0.16 -> Introducing CT_Static and deprecating config.static  

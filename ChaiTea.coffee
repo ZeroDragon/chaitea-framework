@@ -12,7 +12,7 @@ request       = require 'request'
 session       = require 'express-session'
 df            = require 'dateformat'
 bParser       = require 'body-parser'
-jade          = require 'jade'
+pug           = require 'pug'
 stylus        = require 'stylus'
 fs            = require 'fs'
 coffee        = require 'coffee-script'
@@ -111,7 +111,8 @@ _createApp = ->
 specs = {
 	config         : config
 	app            : _createApp()
-	jade           : jade
+	jade           : pug
+	pug            : pug
 	CT_Static      : "#{process.cwd()}/app/views"
 	CT_Assets      : _assets
 	CT_StartServer : _startserver
