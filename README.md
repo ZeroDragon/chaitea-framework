@@ -165,7 +165,7 @@ When the routes are loaded, a callback is fired and you can continue with normal
 
 ## Release Notes
 
-- 2.0.2  -> Added ES6 Compatibility on the frontend using babel thanks to [Ikana](https://github.com/Ikana)
+- 2.0.3  -> Added ES6 Compatibility on the frontend using babel thanks to [Ikana](https://github.com/Ikana)
 - 2.0.1  -> Jade totally discarted, you must use pug from now-on
 - 2.0.0  -> Using PUG instead of JADE, all jade files must be renamed to pug. Updated dependencies for stylus and time
 - 1.0.18 -> ChaiTea uses gzip appwide  
