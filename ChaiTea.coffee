@@ -19,7 +19,7 @@ coffee        = require 'coffee-script'
 time          = require('time')(Date)
 compress      = require 'compression'
 babel         = require 'babel-core'
-bebelOps      = require('.babelrc')
+bebelOps      = JSON.parse(fs.readFileSync("#{__dirname}/.babelrc", 'utf8'))
 d = new Date();d.setTimezone(config.timezone)
 
 _assets = (req,res,next)->
@@ -83,7 +83,7 @@ _assets = (req,res,next)->
 						compiled = coffee.compile coffeCode, {bare:true}
 					else if (es6Code)
 						console.log 'es6Code',es6Code
-						{code} = babel.transform es6Code bebelOps
+						{code} = babel.transform es6Code, bebelOps
 						compiled = code
 						console.log 'compiled',compiled
 					else if(jsCode)
@@ -96,6 +96,7 @@ _assets = (req,res,next)->
 					res.send compiled
 					return
 				).catch((err) ->
+					console.error err
 					_notFound()
 				)
 				return
