@@ -18,6 +18,7 @@ fs            = require 'fs'
 coffee        = require 'coffee-script'
 time          = require('time')(Date)
 compress      = require 'compression'
+babel         = require 'babel-core'
 d = new Date();d.setTimezone(config.timezone)
 
 _assets = (req,res,next)->
@@ -74,6 +75,23 @@ _assets = (req,res,next)->
 				compiled = coffee.compile script, {bare:true}
 				res.header "Content-type", "application/javascript"
 				res.send compiled
+				return
+			when _type('.es6')
+				try
+					script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.es6",{encoding:'utf8'})
+				catch e
+					# is it a vanilla js
+					try
+						js = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
+						res.header "Content-type", "application/javascript"
+						res.send js
+						return
+					catch e
+						_notFound()
+						return
+				{code} = babel.transform script
+				res.header "Content-type", "application/javascript"
+				res.send code
 				return
 			else
 				res.sendFile "#{process.cwd()}/app/assets/#{file}.#{ext}", (err)-> _notFound() if err
