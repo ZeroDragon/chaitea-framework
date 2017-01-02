@@ -36,7 +36,7 @@ _assets = (req,res,next)->
 
 		_notFound = ->
 			res.status 404
-			res.render CT_Static+'/404.jade'
+			res.render CT_Static+'/404.pug'
 			return
 		switch
 			when _type('.css')
@@ -111,7 +111,6 @@ _createApp = ->
 specs = {
 	config         : config
 	app            : _createApp()
-	jade           : pug
 	pug            : pug
 	CT_Static      : "#{process.cwd()}/app/views"
 	CT_Assets      : _assets

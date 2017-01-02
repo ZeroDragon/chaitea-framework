@@ -24,7 +24,7 @@ I've been using ChaiTea-Framework ever since on every webapp I need to create, a
 
 Reffer to [ChaiTea-Brewer](https://github.com/ZeroDragon/ChaiTea-Brewer) documentation.  
 
-### Manuall Install 
+### Manuall Install
 You can skip most of this using ChaiTea-Brewer, but here is the long run:
 
 	npm i chaitea-framework --save
@@ -165,6 +165,7 @@ When the routes are loaded, a callback is fired and you can continue with normal
 
 ## Release Notes
 
+- 2.0.1  -> Jade totally discarted, you must use pug from now-on
 - 2.0.0  -> Using PUG instead of JADE, all jade files must be renamed to pug. Updated dependencies for stylus and time
 - 1.0.18 -> ChaiTea uses gzip appwide  
 - 1.0.17 -> payloadSize can be defined on config.json to allow Request entity too large  
@@ -177,6 +178,6 @@ When the routes are loaded, a callback is fired and you can continue with normal
 - anythingBefore -> nightly build  
 
 ## 10Q
-If you are this far, thanks for reading! 
+If you are this far, thanks for reading!
 
 EOF
