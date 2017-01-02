@@ -82,10 +82,9 @@ _assets = (req,res,next)->
 					if(coffeCode)
 						compiled = coffee.compile coffeCode, {bare:true}
 					else if (es6Code)
-						console.log 'es6Code',es6Code
+
 						{code} = babel.transform es6Code, bebelOps
 						compiled = code
-						console.log 'compiled',compiled
 					else if(jsCode)
 						compiled = jsCode
 					else
@@ -100,22 +99,7 @@ _assets = (req,res,next)->
 					_notFound()
 				)
 				return
-				# try
-				# 	script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
-				# catch e
-				# 	# is it a vanilla js
-				# 	try
-				# 		js = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
-				# 		res.header "Content-type", "application/javascript"
-				# 		res.send js
-				# 		return
-				# 	catch e
-				# 		_notFound()
-				# 		return
-				# compiled = coffee.compile script, {bare:true}
-				# res.header "Content-type", "application/javascript"
-				# res.send compiled
-				# return
+
 
 			else
 				res.sendFile "#{process.cwd()}/app/assets/#{file}.#{ext}", (err)-> _notFound() if err
