@@ -18,6 +18,8 @@ fs            = require 'fs'
 coffee        = require 'coffee-script'
 time          = require('time')(Date)
 compress      = require 'compression'
+babel         = require 'babel-core'
+bebelOps      = JSON.parse(fs.readFileSync("#{__dirname}/.babelrc", 'utf8'))
 d = new Date();d.setTimezone(config.timezone)
 
 _assets = (req,res,next)->
@@ -59,22 +61,46 @@ _assets = (req,res,next)->
 						return
 			when _type('.js')
 				# is it a coffee file
-				try
-					script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
-				catch e
-					# is it a vanilla js
-					try
-						js = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
-						res.header "Content-type", "application/javascript"
-						res.send js
-						return
-					catch e
+				readFile = (path) -> new Promise (resolve,reject) ->
+					fs.readFile(path,'utf8', (err,data) ->
+						if err
+							if(err.code == 'ENOENT')
+								resolve(undefined)
+							else
+								reject(err)
+						resolve(data)
+					)
+
+				Promise.all([
+					readFile("#{process.cwd()}/app/assets/#{file}.coffee"),
+					readFile("#{process.cwd()}/app/assets/#{file}.es6"),
+					readFile("#{process.cwd()}/app/assets/#{file}.js")
+				]).then(([coffeCode,es6Code,jsCode]) ->
+					compiled = undefined
+
+
+					if(coffeCode)
+						compiled = coffee.compile coffeCode, {bare:true}
+					else if (es6Code)
+
+						{code} = babel.transform es6Code, bebelOps
+						compiled = code
+					else if(jsCode)
+						compiled = jsCode
+					else
 						_notFound()
 						return
-				compiled = coffee.compile script, {bare:true}
-				res.header "Content-type", "application/javascript"
-				res.send compiled
+
+					res.header "Content-type", "application/javascript"
+					res.send compiled
+					return
+				).catch((err) ->
+					console.error err
+					_notFound()
+				)
 				return
+
+
 			else
 				res.sendFile "#{process.cwd()}/app/assets/#{file}.#{ext}", (err)-> _notFound() if err
 				return
