@@ -60,39 +60,56 @@ _assets = (req,res,next)->
 						return
 			when _type('.js')
 				# is it a coffee file
-				try
-					script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
-				catch e
-					# is it a vanilla js
-					try
-						js = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
-						res.header "Content-type", "application/javascript"
-						res.send js
-						return
-					catch e
+				readFile = path -> new Promise (resolve,reject) ->
+					fs.readFile(path, (err,data) ->
+						if(err.code === 'ENOENT')
+							resolve(undefined)
+						else
+							reject(err)
+						resolve(data)
+					)
+
+				Promise.all([
+					readFile("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'}),
+					readFile("#{process.cwd()}/app/assets/#{file}.es6",{encoding:'utf8'}),
+					readFile("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
+				]).then(([coffeCode,es6Code,jsCode]) ->
+					compiled = undefined
+
+					if(coffeCode)
+						compiled = coffee.compile coffeCode, {bare:true}
+					else if (es6Code)
+						compiled = babel.transform es6Code
+					else if(jsCode)
+						compiled = jsCode
+					else
 						_notFound()
 						return
-				compiled = coffee.compile script, {bare:true}
-				res.header "Content-type", "application/javascript"
-				res.send compiled
+
+					res.header "Content-type", "application/javascript"
+					res.send compiled
+					return
+				).catch(err ->
+					_notFound()
+				)
 				return
-			when _type('.es6')
-				try
-					script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.es6",{encoding:'utf8'})
-				catch e
-					# is it a vanilla js
-					try
-						js = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
-						res.header "Content-type", "application/javascript"
-						res.send js
-						return
-					catch e
-						_notFound()
-						return
-				{code} = babel.transform script
-				res.header "Content-type", "application/javascript"
-				res.send code
-				return
+				# try
+				# 	script = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.coffee",{encoding:'utf8'})
+				# catch e
+				# 	# is it a vanilla js
+				# 	try
+				# 		js = fs.readFileSync("#{process.cwd()}/app/assets/#{file}.js",{encoding:'utf8'})
+				# 		res.header "Content-type", "application/javascript"
+				# 		res.send js
+				# 		return
+				# 	catch e
+				# 		_notFound()
+				# 		return
+				# compiled = coffee.compile script, {bare:true}
+				# res.header "Content-type", "application/javascript"
+				# res.send compiled
+				# return
+
 			else
 				res.sendFile "#{process.cwd()}/app/assets/#{file}.#{ext}", (err)-> _notFound() if err
 				return
