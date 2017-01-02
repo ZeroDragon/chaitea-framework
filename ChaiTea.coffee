@@ -62,7 +62,7 @@ _assets = (req,res,next)->
 				# is it a coffee file
 				readFile = path -> new Promise (resolve,reject) ->
 					fs.readFile(path, (err,data) ->
-						if(err.code === 'ENOENT')
+						if(err.code == 'ENOENT')
 							resolve(undefined)
 						else
 							reject(err)
